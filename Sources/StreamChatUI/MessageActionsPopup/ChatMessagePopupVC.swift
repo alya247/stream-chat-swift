@@ -29,6 +29,11 @@ open class _ChatMessagePopupVC<ExtraData: ExtraDataTypes>: _ViewController, Comp
             .withoutAutoresizingMaskConstraints
     }()
     
+    /// Action which is ran while dismissing the popupVC
+    open var onDismissAction: (() -> Void)?
+    /// Action which is ran while presenting the popupVC
+    open var onPresentAction: (() -> Void)?
+    
     /// Container view that holds `messageContentView`.
     open private(set) lazy var messageContentContainerView = UIView()
         .withoutAutoresizingMaskConstraints
@@ -179,6 +184,6 @@ open class _ChatMessagePopupVC<ExtraData: ExtraDataTypes>: _ViewController, Comp
             return
         }
 
-        dismiss(animated: true)
+        dismiss(animated: true, completion: onDismissAction)
     }
 }

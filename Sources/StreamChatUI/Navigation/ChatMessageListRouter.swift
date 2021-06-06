@@ -36,9 +36,14 @@ open class _ChatMessageListRouter<ExtraData: ExtraDataTypes>:
     open func showMessageActionsPopUp(
         messageContentView: _ChatMessageContentView<ExtraData>,
         messageActionsController: _ChatMessageActionsVC<ExtraData>,
-        messageReactionsController: _ChatMessageReactionsVC<ExtraData>?
+        messageReactionsController: _ChatMessageReactionsVC<ExtraData>?,
+        onPresentAction: (() -> Void)? = nil,
+        onDismissAction: (() -> Void)? = nil
     ) {
         let popup = components.messagePopupVC.init()
+        popup.onPresentAction = onPresentAction
+        popup.onDismissAction = onDismissAction
+        
         popup.messageContentView = messageContentView
         popup.actionsController = messageActionsController
         popup.reactionsController = messageReactionsController

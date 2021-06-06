@@ -392,10 +392,13 @@ open class _ChatMessageListVC<ExtraData: ExtraDataTypes>:
             return controller
         }()
 
+        messageContentView.textView?.textContainer.maximumNumberOfLines = 6
+        
         router.showMessageActionsPopUp(
             messageContentView: messageContentView,
             messageActionsController: actionsController,
-            messageReactionsController: reactionsController
+            messageReactionsController: reactionsController,
+            onDismissAction: { messageContentView.textView?.textContainer.maximumNumberOfLines = 0 }
         )
     }
 
