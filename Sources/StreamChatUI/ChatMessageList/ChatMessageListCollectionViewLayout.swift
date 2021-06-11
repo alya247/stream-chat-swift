@@ -277,11 +277,13 @@ open class ChatMessageListCollectionViewLayout: UICollectionViewLayout {
         super.prepare()
 
         guard !didPerformInitialLayout else { return }
-        didPerformInitialLayout = true
 
         guard currentItems.isEmpty else { return }
         guard let cv = collectionView else { return }
         currentCollectionViewWidth = cv.bounds.width
+        
+        guard currentCollectionViewWidth != 0 else { return }
+        didPerformInitialLayout = true
 
         let count = cv.numberOfItems(inSection: 0)
         guard count > 0 else { return }
