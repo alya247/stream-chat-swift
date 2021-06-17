@@ -20,7 +20,7 @@ public typealias GalleryAttachmentViewInjector = _GalleryAttachmentViewInjector<
 open class _GalleryAttachmentViewInjector<ExtraData: ExtraDataTypes>: _AttachmentViewInjector<ExtraData> {
     open private(set) lazy var galleryView = contentView
         .components
-        .imageGalleryView
+        .galleryView
         .init()
         .withoutAutoresizingMaskConstraints
 
@@ -34,10 +34,10 @@ open class _GalleryAttachmentViewInjector<ExtraData: ExtraDataTypes>: _Attachmen
     }
     
     override open func contentViewDidUpdateContent() {
-        galleryView.content = imageAttachments
         galleryView.didTapOnAttachment = { [weak self] attachment in
             self?.handleTapOnAttachment(attachment)
         }
+        galleryView.content = videoAttachments.map(preview)
     }
 
     open func handleTapOnAttachment(_ attachment: ChatMessageImageAttachment) {
@@ -46,7 +46,7 @@ open class _GalleryAttachmentViewInjector<ExtraData: ExtraDataTypes>: _Attachmen
         else { return }
         (contentView.delegate as? GalleryContentViewDelegate)?.didTapOnImageAttachment(
             attachment,
-            previews: galleryView.previews,
+            previews: galleryView.content.compactMap { $0 as? ImagePreviewable },
             at: indexPath
         )
     }
@@ -55,5 +55,21 @@ open class _GalleryAttachmentViewInjector<ExtraData: ExtraDataTypes>: _Attachmen
 private extension _GalleryAttachmentViewInjector {
     var imageAttachments: [ChatMessageImageAttachment] {
         contentView.content?.imageAttachments ?? []
+    }
+    
+    func preview(for imageAttachment: ChatMessageImageAttachment) -> UIView {
+        let preview = contentView
+            .components
+            .imageAttachmentCellView
+            .init()
+            .withoutAutoresizingMaskConstraints
+        
+        preview.didTapOnAttachment = { [weak self] in
+            self?.handleTapOnAttachment($0)
+        }
+        
+        preview.content = imageAttachment
+
+        return preview
     }
 }
