@@ -404,6 +404,13 @@ open class _ChatMessageListVC<ExtraData: ExtraDataTypes>:
     }
 
     // MARK: - Cell action handlers
+    
+    open func didTapOnVideoAttachment(
+        _ attachment: ChatMessageVideoAttachment,
+        previews: [ImagePreviewable],
+        at indexPath: IndexPath
+    ) {
+    }
 
     public func didTapOnImageAttachment(
         _ attachment: ChatMessageImageAttachment,
