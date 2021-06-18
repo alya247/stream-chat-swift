@@ -27,6 +27,7 @@
          ]
         },
         "guides/ui-customization",
+        "guides/working-with-the-composer",
         "guides/working-with-user",
         "guides/events",
         "guides/push-notifications",
