@@ -90,7 +90,7 @@ public extension AnyChatMessageAttachment {
     }
 }
 
-extension _ChatMessageAttachment {
+public extension _ChatMessageAttachment {
     var asAnyAttachment: AnyChatMessageAttachment {
         .init(
             id: id,

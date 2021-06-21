@@ -7,36 +7,39 @@ import StreamChatTestTools
 @testable import StreamChatUI
 import XCTest
 
-final class ImageGalleryVC_Tests: XCTestCase {
-    private var vc: ImageGalleryVC!
-    private var content: ChatMessage!
+final class GalleryVC_Tests: XCTestCase {
+    private var vc: GalleryVC!
+    private var content: GalleryVC.Content!
     
     override func setUp() {
         super.setUp()
         
-        content = .mock(
-            id: .unique,
-            text: "",
-            author: .mock(
+        content = .init(
+            message: .mock(
                 id: .unique,
-                name: "Author"
+                text: "",
+                author: .mock(
+                    id: .unique,
+                    name: "Author"
+                ),
+                createdAt: Date(timeIntervalSinceReferenceDate: 0),
+                attachments: [
+                    ChatMessageImageAttachment.mock(
+                        id: .unique,
+                        imageURL: TestImages.yoda.url
+                    ).asAnyAttachment,
+                    ChatMessageImageAttachment.mock(
+                        id: .unique,
+                        imageURL: TestImages.chewbacca.url
+                    ).asAnyAttachment
+                ]
             ),
-            createdAt: Date(timeIntervalSinceReferenceDate: 0),
-            attachments: [
-                ChatMessageImageAttachment.mock(
-                    id: .unique,
-                    imageURL: TestImages.yoda.url
-                ).asAnyAttachment,
-                ChatMessageImageAttachment.mock(
-                    id: .unique,
-                    imageURL: TestImages.chewbacca.url
-                ).asAnyAttachment
-            ]
+            currentPage: 0
         )
         
-        vc = ImageGalleryVC()
-        vc.initialAttachment = content.imageAttachments[0]
+        vc = GalleryVC()
         vc.content = content
+        vc.attachmentsCollectionView.reloadData()
     }
     
     override func tearDown() {
@@ -60,8 +63,8 @@ final class ImageGalleryVC_Tests: XCTestCase {
     }
     
     func test_appearanceCustomization_usingSubclassing() {
-        class TestView: ImageGalleryVC {
-            override var closeButton: CloseButton {
+        class TestView: GalleryVC {
+            override var closeButton: UIButton {
                 let button = CloseButton()
                 button.setTitle("Test title", for: .normal)
                 return button
@@ -69,7 +72,6 @@ final class ImageGalleryVC_Tests: XCTestCase {
         }
 
         let vc = TestView()
-        vc.initialAttachment = content.imageAttachments[0]
         vc.content = content
 
         AssertSnapshot(vc)

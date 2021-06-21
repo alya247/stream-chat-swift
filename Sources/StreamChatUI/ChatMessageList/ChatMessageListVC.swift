@@ -407,23 +407,24 @@ open class _ChatMessageListVC<ExtraData: ExtraDataTypes>:
     
     open func didTapOnVideoAttachment(
         _ attachment: ChatMessageVideoAttachment,
-        previews: [ImagePreviewable],
+        previews: [GalleryItemPreview],
         at indexPath: IndexPath
     ) {
+        router.showImageGallery(
+            message: messageForIndexPath(indexPath),
+            initialAttachmentId: attachment.id,
+            previews: previews
+        )
     }
 
     public func didTapOnImageAttachment(
         _ attachment: ChatMessageImageAttachment,
-        previews: [ImagePreviewable],
+        previews: [GalleryItemPreview],
         at indexPath: IndexPath
     ) {
-        guard
-            let cell = collectionView.cellForItem(at: indexPath) as? _ChatMessageCollectionViewCell<ExtraData>,
-            let message = cell.messageContentView?.content
-        else { return }
         router.showImageGallery(
-            message: message,
-            initialAttachment: attachment,
+            message: messageForIndexPath(indexPath),
+            initialAttachmentId: attachment.id,
             previews: previews
         )
     }

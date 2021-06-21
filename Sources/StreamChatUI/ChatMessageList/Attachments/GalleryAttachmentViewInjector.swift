@@ -10,14 +10,14 @@ public protocol GalleryContentViewDelegate: ChatMessageContentViewDelegate {
     /// Called when the user taps on one of the image attachments.
     func didTapOnImageAttachment(
         _ attachment: ChatMessageImageAttachment,
-        previews: [ImagePreviewable],
+        previews: [GalleryItemPreview],
         at indexPath: IndexPath
     )
     
     /// Called when the user taps on one of the media attachments.
     func didTapOnVideoAttachment(
         _ attachment: ChatMessageVideoAttachment,
-        previews: [ImagePreviewable],
+        previews: [GalleryItemPreview],
         at indexPath: IndexPath
     )
 }
@@ -50,7 +50,7 @@ open class _GalleryAttachmentViewInjector<ExtraData: ExtraDataTypes>: _Attachmen
         else { return }
         (contentView.delegate as? GalleryContentViewDelegate)?.didTapOnImageAttachment(
             attachment,
-            previews: galleryView.content.compactMap { $0 as? ImagePreviewable },
+            previews: galleryView.content.compactMap { $0 as? GalleryItemPreview },
             at: indexPath
         )
     }
@@ -60,7 +60,7 @@ open class _GalleryAttachmentViewInjector<ExtraData: ExtraDataTypes>: _Attachmen
         
         (contentView.delegate as? GalleryContentViewDelegate)?.didTapOnVideoAttachment(
             attachment,
-            previews: galleryView.content.compactMap { $0 as? ImagePreviewable },
+            previews: galleryView.content.compactMap { $0 as? GalleryItemPreview },
             at: indexPath
         )
     }
