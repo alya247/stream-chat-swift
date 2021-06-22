@@ -17,6 +17,7 @@ open class _ChatThreadVC<ExtraData: ExtraDataTypes>:
     _ChatMessageControllerDelegate,
     _ChatMessageActionsVCDelegate,
     ChatMessageContentViewDelegate,
+    GalleryContentViewDelegate,
     UICollectionViewDelegate,
     UICollectionViewDataSource {
     /// Controller for observing data changes within the channel
@@ -448,6 +449,42 @@ open class _ChatThreadVC<ExtraData: ExtraDataTypes>:
     open func messageContentViewDidTapOnQuotedMessage(_ indexPath: IndexPath?) {
         guard let indexPath = indexPath else { return log.error("IndexPath is not available") }
         print(#function, indexPath)
+    }
+    
+    open func galleryMessageContentView(
+        at indexPath: IndexPath?,
+        didTapAttachmentPreview attachmentId: AttachmentId,
+        previews: [GalleryItemPreview]
+    ) {
+        guard let indexPath = indexPath else { return log.error("IndexPath is not available") }
+        
+        router.showGallery(
+            message: messageForIndexPath(indexPath),
+            initialAttachmentId: attachmentId,
+            previews: previews
+        )
+    }
+    
+    open func galleryMessageContentView(
+        at indexPath: IndexPath?,
+        didTakeActionOnUploadingAttachment attachmentId: AttachmentId
+    ) {
+        guard let indexPath = indexPath else { return log.error("IndexPath is not available") }
+        
+        let message = messageForIndexPath(indexPath)
+         
+        guard let localState = message.attachment(with: attachmentId)?.uploadingState else {
+            return log.error("Failed to take an action on attachment with \(attachmentId)")
+        }
+        
+        switch localState.state {
+        case .uploadingFailed:
+            channelController.client
+                .messageController(cid: attachmentId.cid, messageId: attachmentId.messageId)
+                .restartFailedAttachmentUploading(with: attachmentId)
+        default:
+            break
+        }
     }
 
     open func messageForIndexPath(_ indexPath: IndexPath) -> _ChatMessage<ExtraData> {
