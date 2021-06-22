@@ -7,15 +7,33 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### ⚠️ Breaking Changes from `4.0-beta.3`
 - `ChatOnlineIndicatorView` renamed to `OnlineIndicatorView`
+- `ChatMessageImageGallery` renamed to `ChatMessageGalleryView`, updated to show any content
+- `ImageGalleryVC` renamed to `GalleryVC`
+- `ImagePreviewable` renamed to `GalleryItemPreview`, updated to expose `AttachmentId` only
+- `GalleryContentViewDelegate` methods are renamed to work not only for image attachment but for any
+- `selectedAttachmentType` removed from `ComposerVC`
+- `imagePickerVC` renamed to `mediaPickerVC` in `ComposerVC`
 
 ### ✅ Added
+- Video attachments support:
+ - `VideoAttachmentPayload` type is introduced, video attachments are exposed on `ChatMessage`
+ - `VideoAttachmentComposerView` component is added to displaying video thumbnails in `ComposerVC`
+ - `VideoAttachmentCellView` displaying video previews in `ChatMessageImageGallery`
+ - `VideoCollectionViewCell` displaying videos in `GalleryVC`
+ - `VideoPlaybackControlView` used to take actions on the playing video in `GalleryVC`
+ - `VideoPreviewLoader` loading video thumbnails
+ For more information, see [#1194](https://github.com/GetStream/stream-chat-swift/pull/1194)
 - `mentionText(for:)` function added to `ComposerVC` for customizing the text displayed for mentions [#1188](https://github.com/GetStream/stream-chat-swift/issues/1188) [#1000](https://github.com/GetStream/stream-chat-swift/issues/1000)
 - `score` to `ChatMessageReactionData` so a slack-like reaction view is achievable. This would be used as content in `ChatMessageReactionsView` [#1200](https://github.com/GetStream/stream-chat-swift/issues/1200)
+- `showMediaPicker`/`showFilePicker`/`attachmentsPickerActions` functions added to `ComposerVC` so it's possible to customize media/document pickers and add extend action sheet with actions for custom attachment types [#1194](https://github.com/GetStream/stream-chat-swift/pull/1194)
+- `mediaPickerVC` in `ComposerVC` updated to show both photos and videos [#1194](https://github.com/GetStream/stream-chat-swift/pull/1194)
 
 ### 🐞 Fixed 
 - Fix sorting Member List by `createdAt` causing an issue [#1185](https://github.com/GetStream/stream-chat-swift/issues/1185)
 - Fix ComposerView not respecting `ChannelConfig.maxMessageLength [#1190](https://github.com/GetStream/stream-chat-swift/issues/1190)
 - Fix mentions not being parsed correctly [#1188](https://github.com/GetStream/stream-chat-swift/issues/1188)
+- Fix restart uploading action not being propagated [#1194](https://github.com/GetStream/stream-chat-swift/pull/1194)
+- Fix uploading progress not visible on image uploading overlay [#1194](https://github.com/GetStream/stream-chat-swift/pull/1194)
 
 # [4.0.0-beta.3](https://github.com/GetStream/stream-chat-swift/releases/tag/4.0.0-beta.3)
 _June 11, 2021_
