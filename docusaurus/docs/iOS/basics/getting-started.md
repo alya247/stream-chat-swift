@@ -4,7 +4,7 @@ title: Getting Started
 
 This section provides a high level overview of the library setup, core components, and how they fit together. It's a great starting point and you can follow along in your code editor. For a complete, step-by-step guide in terms setting up an iOS project or instructions on creating specific files, see our [iOS Chat tutorial](/tutorials/ios-chat/).
 
-## Your First App with Stream Chat React
+## Your First App with Stream Chat iOS
 
 Before starting, make sure you have installed `StreamChatUI`, as explained in the [Installation](../#installation) section.
 
