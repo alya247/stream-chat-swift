@@ -317,7 +317,7 @@ open class _ChatMessageContentView<ExtraData: ExtraDataTypes>: _View, ThemeProvi
         // Quoted message
         if options.contains(.quotedMessage) {
             let quotedMessageView = createQuotedMessageView()
-            bubbleContentContainer.addArrangedSubview(quotedMessageView, respectsLayoutMargins: true)
+            bubbleContentContainer.addArrangedSubview(quotedMessageView)
         }
 
         // Text
@@ -511,7 +511,6 @@ open class _ChatMessageContentView<ExtraData: ExtraDataTypes>: _View, ThemeProvi
             textView?.adjustsFontForContentSizeCategory = true
             textView?.textContainerInset = .init(top: 0, left: 8, bottom: 0, right: 8)
             textView?.textContainer.lineFragmentPadding = 0
-            textView?.translatesAutoresizingMaskIntoConstraints = false
             textView?.font = appearance.fonts.body
         }
         return textView!
