@@ -23,5 +23,5 @@ Pod::Spec.new do |spec|
   spec.framework = "Foundation"
   spec.ios.framework = "UIKit"
 
-  spec.dependency "Starscream", "~> 4.0"
+  spec.dependency "Starscream", "~> 3.1"
 end
