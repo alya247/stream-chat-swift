@@ -45,33 +45,28 @@ final class StarscreamWebSocketProvider: WebSocketProvider {
 
 extension StarscreamWebSocketProvider: Starscream.WebSocketDelegate {
     
-    func didReceive(event: Starscream.WebSocketEvent, client: Starscream.WebSocket) {
-        switch event {
-        case .connected:
-            didConnect()
-        case let .text(text):
-            delegate?.websocketDidReceiveMessage(text)
-        case let .error(error):
-            didDisconnect(error: error.flatMap {
-                .init(reason: $0.localizedDescription,
-                      code: Int(($0 as? WSError)?.code ?? 0),
-                      providerType: StarscreamWebSocketProvider.self,
-                      providerError: $0)
-            })
-        case let .disconnected(reason, code):
-            didDisconnect(error: .init(reason: reason,
-                                       code: Int(code),
-                                       providerType: StarscreamWebSocketProvider.self,
-                                       providerError: nil))
-        case .cancelled:
-            didDisconnect(error: .init(reason: "Cancelled",
-                                       code: -1,
-                                       providerType: StarscreamWebSocketProvider.self,
-                                       providerError: nil))
-        default:
-            break
-        }
+    func websocketDidConnect(socket: WebSocketClient) {
+        didConnect()
     }
+    
+    func websocketDidDisconnect(socket: WebSocketClient, error: Error?) {
+        var webSocketProviderError: WebSocketProviderError?
+
+        if let error = error {
+            webSocketProviderError = .init(reason: error.localizedDescription,
+                                           code: (error as? WSError)?.code ?? 0,
+                                           providerType: StarscreamWebSocketProvider.self,
+                                           providerError: error)
+        }
+        
+        didDisconnect(error: webSocketProviderError)
+    }
+    
+    func websocketDidReceiveMessage(socket: WebSocketClient, text: String) {
+        delegate?.websocketDidReceiveMessage(text)
+    }
+    
+    func websocketDidReceiveData(socket: WebSocketClient, data: Data) { }
     
     private func didConnect() {
         isConnected = true
